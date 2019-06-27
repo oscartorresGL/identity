@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AF083BA3-B530-4724-83D8-CF61D890770B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Admin", "src\Identity.Admin\Identity.Admin.csproj", "{F5A4193C-AC49-4FEB-976D-AB9253E22B86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Admin", "src\Identity.Admin\Identity.Admin.csproj", "{F5A4193C-AC49-4FEB-976D-AB9253E22B86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.STS.Identity", "src\Identity.STS.Identity\Identity.STS.Identity.csproj", "{B78C0220-4549-440B-8B63-A011392EFA68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.STS.Identity", "src\Identity.STS.Identity\Identity.STS.Identity.csproj", "{B78C0220-4549-440B-8B63-A011392EFA68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Admin.Api", "src\Identity.Admin.Api\Identity.Admin.Api.csproj", "{067B9B8D-C52A-441F-AF9B-9A0880978A29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Admin.Api", "src\Identity.Admin.Api\Identity.Admin.Api.csproj", "{067B9B8D-C52A-441F-AF9B-9A0880978A29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Admin.EntityFramework.Shared", "src\Identity.Admin.EntityFramework.Shared\Identity.Admin.EntityFramework.Shared.csproj", "{8B0BD592-B8A4-4E3C-9DDB-FC2041EB0DD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Admin.EntityFramework.Shared", "src\Identity.Admin.EntityFramework.Shared\Identity.Admin.EntityFramework.Shared.csproj", "{8B0BD592-B8A4-4E3C-9DDB-FC2041EB0DD8}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0785B135-607C-4967-8597-FC02C760FB44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F5A4193C-AC49-4FEB-976D-AB9253E22B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -74,11 +73,29 @@ Global
 		{8B0BD592-B8A4-4E3C-9DDB-FC2041EB0DD8}.Release|x64.Build.0 = Release|Any CPU
 		{8B0BD592-B8A4-4E3C-9DDB-FC2041EB0DD8}.Release|x86.ActiveCfg = Release|Any CPU
 		{8B0BD592-B8A4-4E3C-9DDB-FC2041EB0DD8}.Release|x86.Build.0 = Release|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Debug|x64.Build.0 = Debug|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Debug|x86.Build.0 = Debug|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Release|x64.ActiveCfg = Release|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Release|x64.Build.0 = Release|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Release|x86.ActiveCfg = Release|Any CPU
+		{0785B135-607C-4967-8597-FC02C760FB44}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F5A4193C-AC49-4FEB-976D-AB9253E22B86} = {AF083BA3-B530-4724-83D8-CF61D890770B}
 		{B78C0220-4549-440B-8B63-A011392EFA68} = {AF083BA3-B530-4724-83D8-CF61D890770B}
 		{067B9B8D-C52A-441F-AF9B-9A0880978A29} = {AF083BA3-B530-4724-83D8-CF61D890770B}
 		{8B0BD592-B8A4-4E3C-9DDB-FC2041EB0DD8} = {AF083BA3-B530-4724-83D8-CF61D890770B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93B4C5E9-1E2F-4FDD-AAC2-BF76B1400595}
 	EndGlobalSection
 EndGlobal

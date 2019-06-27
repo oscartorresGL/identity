@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identitystsidentity
+    build:
+      context: .
+      dockerfile: src/Identity.STS.Identity/Dockerfile
+
+  identity.admin:
+    image: ${DOCKER_REGISTRY-}identityadmin
+    build:
+      context: .
+      dockerfile: src/Identity.Admin/Dockerfile

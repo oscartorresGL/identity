@@ -10,9 +10,9 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "commandLineArgs": "/seed",
       "launchBrowser": true,
       "environmentVariables": {
+        "IDENTITY_ADMIN_SEED": "",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
@@ -23,6 +23,12 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:9000/"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 10000
     }
   }
 }

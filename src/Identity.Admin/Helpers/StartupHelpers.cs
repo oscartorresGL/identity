@@ -35,6 +35,8 @@ using Identity.Admin.Configuration.Constants;
 using Identity.Admin.Configuration.Interfaces;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Interfaces;
 using Identity.Admin.Helpers.Localization;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace Identity.Admin.Helpers
 {
@@ -58,7 +60,7 @@ namespace Identity.Admin.Helpers
             var storeOptions = new ConfigurationStoreOptions();
             services.AddSingleton(storeOptions);
 
-            services.AddDbContext<TContext>(options => options.UseSqlServer(configuration.GetConnectionString(ConfigurationConsts.AdminConnectionStringKey), optionsSql => optionsSql.MigrationsAssembly(migrationsAssembly)));
+            services.AddDbContext<TContext>(options => options.UseNpgsql(configuration.GetConnectionString(ConfigurationConsts.AdminConnectionStringKey), optionsSql => optionsSql.MigrationsAssembly(migrationsAssembly)));
         }
 
         /// <summary>
@@ -100,14 +102,14 @@ namespace Identity.Admin.Helpers
 
             // Config DB for identity
             services.AddDbContext<TIdentityDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString(ConfigurationConsts.IdentityDbConnectionStringKey),
+                options.UseNpgsql(configuration.GetConnectionString(ConfigurationConsts.IdentityDbConnectionStringKey),
                     sql => sql.MigrationsAssembly(migrationsAssembly)));
 
             // Config DB from existing connection
             services.AddConfigurationDbContext<TConfigurationDbContext>(options =>
             {
                 options.ConfigureDbContext = b =>
-                    b.UseSqlServer(configuration.GetConnectionString(ConfigurationConsts.ConfigurationDbConnectionStringKey),
+                    b.UseNpgsql(configuration.GetConnectionString(ConfigurationConsts.ConfigurationDbConnectionStringKey),
                         sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
@@ -115,13 +117,13 @@ namespace Identity.Admin.Helpers
             services.AddOperationalDbContext<TPersistedGrantDbContext>(options =>
             {
                 options.ConfigureDbContext = b =>
-                    b.UseSqlServer(configuration.GetConnectionString(ConfigurationConsts.PersistedGrantDbConnectionStringKey),
+                    b.UseNpgsql(configuration.GetConnectionString(ConfigurationConsts.PersistedGrantDbConnectionStringKey),
                         sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
             // Log DB from existing connection
             services.AddDbContext<TLogDbContext>(options =>
-                options.UseSqlServer(
+                options.UseNpgsql(
                     configuration.GetConnectionString(ConfigurationConsts.AdminLogDbConnectionStringKey),
                     optionsSql => optionsSql.MigrationsAssembly(migrationsAssembly)));
         }
@@ -439,7 +441,6 @@ namespace Identity.Admin.Helpers
                     .AddOpenIdConnect(AuthenticationConsts.OidcAuthenticationScheme, options =>
                     {
                         options.Authority = adminConfiguration.IdentityServerBaseUrl;
-
                         // NOTE: This is only for development set for false
                         // For production use - set RequireHttpsMetadata to true!
                         options.RequireHttpsMetadata = false;
