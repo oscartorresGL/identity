@@ -23,6 +23,7 @@ namespace Identity.Admin.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogInformation("I am here");
             return View();
         }
 

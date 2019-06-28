@@ -4,17 +4,22 @@ services:
   identity.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+      - AdminConfiguration__IdentityAdminBaseUrl=http://localhost:9000
+    volumes:
+      - ./src/Identity.STS.Identity/appsettings.json:/app/appsettings.json
+      - ./src/Identity.STS.Identity/Log:/app/Log
     ports:
-      - "5000:80"
+      - "5000:5000"
    
   identity.admin:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - IDENTITY_ADMIN_SEED=
-      - AdminConfiguration__IdentityServerBaseUrl=http://10.0.75.1:5000
-
+      - ASPNETCORE_URLS=http://0.0.0.0:9000
+#      - IDENTITY_ADMIN_SEED=
+      - AdminConfiguration__IdentityServerBaseUrl=http://identity.api:5000
+    volumes:
+      - ./src/Identity.Admin/appsettings.json:/app/appsettings.json
     ports:
-      - "9000:80"
+      - "9000:9000"
     

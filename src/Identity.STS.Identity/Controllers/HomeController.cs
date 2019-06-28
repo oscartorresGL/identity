@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Identity.STS.Identity.Helpers;
 using Identity.STS.Identity.ViewModels.Home;
+using Microsoft.Extensions.Logging;
 
 namespace Identity.STS.Identity.Controllers
 {
@@ -19,14 +20,17 @@ namespace Identity.STS.Identity.Controllers
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IIdentityServerInteractionService interaction)
+        public HomeController(IIdentityServerInteractionService interaction, ILogger<HomeController> logger)
         {
             _interaction = interaction;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInformation("Index here =====================");
             return View();
         }
 

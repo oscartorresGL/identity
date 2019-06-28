@@ -4,7 +4,6 @@
     {
         string IdentityAdminRedirectUri { get; }
         string IdentityServerBaseUrl { get; }
-        string IdentityServerBaseLocalUrl { get; }
         string IdentityAdminBaseUrl { get; }
         string ClientId { get; }
         string ClientSecret { get; }
