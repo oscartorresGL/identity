@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
+using Identity.Admin.EntityFramework.Shared.Entities.Identity;
 using IdentityServer4.EntityFramework.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +25,7 @@ using Identity.STS.Identity.Configuration.ApplicationParts;
 using Identity.STS.Identity.Configuration.Constants;
 using Identity.STS.Identity.Configuration.Intefaces;
 using Identity.STS.Identity.Helpers.Localization;
+using Identity.STS.Identity.Helpers.Stores;
 using Identity.STS.Identity.Services;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -139,6 +141,7 @@ namespace Identity.STS.Identity.Helpers
             var loginConfiguration = GetLoginConfiguration(configuration);
             var registrationConfiguration = GetRegistrationConfiguration(configuration);
 
+           
             services
                 .AddSingleton(registrationConfiguration)
                 .AddSingleton(loginConfiguration)
@@ -149,6 +152,9 @@ namespace Identity.STS.Identity.Helpers
                 })
                 .AddEntityFrameworkStores<TIdentityDbContext>()
                 .AddDefaultTokenProviders();
+
+            //services.AddScoped<IUserStore<UserIdentity>, LdapUserStore>();
+            //services.AddScoped<IRoleStore<UserIdentityRole>, LdapRoleStore>();
 
             services.Configure<IISOptions>(iis =>
             {

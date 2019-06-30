@@ -5,9 +5,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5000
-      - AdminConfiguration__IdentityAdminBaseUrl=http://localhost:9000
+      - AdminConfiguration__IdentityAdminBaseUrl=http://${EXTERNAL_DNS_NAME_OR_IP}:9000
     volumes:
       - ./src/Identity.STS.Identity/appsettings.json:/app/appsettings.json
+      - ./src/Identity.STS.Identity/appsettings.Development.json:/app/appsettings.Development.json
       - ./src/Identity.STS.Identity/Log:/app/Log
     ports:
       - "5000:5000"
@@ -20,6 +21,7 @@ services:
       - AdminConfiguration__IdentityServerBaseUrl=http://identity.api:5000
     volumes:
       - ./src/Identity.Admin/appsettings.json:/app/appsettings.json
+      - ./src/Identity.Admin/appsettings.Development.json:/app/appsettings.Development.json
     ports:
       - "9000:9000"
     

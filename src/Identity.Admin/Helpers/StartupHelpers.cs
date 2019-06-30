@@ -37,6 +37,7 @@ using Skoruba.IdentityServer4.Admin.EntityFramework.Interfaces;
 using Identity.Admin.Helpers.Localization;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Net.Http;
 
 namespace Identity.Admin.Helpers
 {
@@ -392,7 +393,7 @@ namespace Identity.Admin.Helpers
         /// <param name="services"></param>
         /// <param name="hostingEnvironment"></param>
         /// <param name="adminConfiguration"></param>
-        public static void AddAuthenticationServices<TContext, TUserIdentity, TUserIdentityRole>(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IAdminConfiguration adminConfiguration)
+        public static void AddAuthenticationServices<TContext, TUserIdentity, TUserIdentityRole>(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IAdminConfiguration adminConfiguration, Microsoft.Extensions.Logging.ILogger logger)
             where TContext : DbContext where TUserIdentity : class where TUserIdentityRole : class
         {
             services.AddIdentity<TUserIdentity, TUserIdentityRole>(options =>
@@ -440,6 +441,12 @@ namespace Identity.Admin.Helpers
                         })
                     .AddOpenIdConnect(AuthenticationConsts.OidcAuthenticationScheme, options =>
                     {
+                        using (var http = new HttpClient())
+                        {
+                            logger.LogInformation($"IdentityServerBaseUrl: {adminConfiguration.IdentityServerBaseUrl}");
+                            var res = http.GetStringAsync(adminConfiguration.IdentityServerBaseUrl).Result;
+                            logger.LogInformation($"res: {res}");
+                        }
                         options.Authority = adminConfiguration.IdentityServerBaseUrl;
                         // NOTE: This is only for development set for false
                         // For production use - set RequireHttpsMetadata to true!

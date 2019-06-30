@@ -14,7 +14,9 @@ namespace Identity.Admin
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public ILogger Logger { get; set; }
+
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -30,6 +32,7 @@ namespace Identity.Admin
             }
 
             Configuration = builder.Build();
+            Logger = loggerFactory.CreateLogger<Startup>();
 
             HostingEnvironment = env;
         }
@@ -48,7 +51,7 @@ namespace Identity.Admin
             services.AddDbContexts<AdminIdentityDbContext, IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, AdminLogDbContext>(HostingEnvironment, Configuration);
 
             // Add Asp.Net Core Identity Configuration and OpenIdConnect auth as well
-            services.AddAuthenticationServices<AdminIdentityDbContext, UserIdentity, UserIdentityRole>(HostingEnvironment, rootConfiguration.AdminConfiguration);
+            services.AddAuthenticationServices<AdminIdentityDbContext, UserIdentity, UserIdentityRole>(HostingEnvironment, rootConfiguration.AdminConfiguration, Logger);
             
             // Add exception filters in MVC
             services.AddMvcExceptionFilters();
@@ -82,6 +85,8 @@ namespace Identity.Admin
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.AddLogging(loggerFactory, Configuration);
+
+
 
             if (env.IsDevelopment())
             {
