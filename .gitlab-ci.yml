@@ -1,0 +1,41 @@
+image: dist.hosts.rfi:5000/dind:kub
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  
+services:
+- name: docker:dind
+  command: ["--insecure-registry=dist.hosts.rfi:5000"]
+
+before_script:
+- docker info
+
+
+stages:
+  - build
+  - deploy-pre-production
+  - deploy-production
+
+build_job:
+  stage: build
+  script:
+    - env
+    - ansible-playbook ./ci.yml -t build -e "project_dir=$CI_PROJECT_DIR project=$CI_PROJECT_NAME tag=$CI_PIPELINE_ID"
+
+deploy_pre_production:
+  stage: deploy-pre-production
+  when: manual
+  script:
+    - ansible-playbook ./ci.yml -t deploy-pre-production -e "project_dir=$CI_PROJECT_DIR project=$CI_PROJECT_NAME tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG"
+  artifacts:
+    paths:
+      - preprod.kub.yaml
+
+deploy_production:
+  stage: deploy-production
+  when: manual
+  script:
+    - ansible-playbook ./ci.yml -t deploy-production -e "project_dir=$CI_PROJECT_DIR project=$CI_PROJECT_NAME tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG"
+  artifacts:
+    paths:
+      - prod.kub.yaml

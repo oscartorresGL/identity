@@ -1,0 +1,137 @@
+{% macro env() -%}
+- name: ASPNETCORE_ENVIRONMENT
+  value: "Development"
+- name: ASPNETCORE_URLS
+  value: "http://0.0.0.0:8080"
+- name: ORACLE_CS
+  value: "Data Source = 172.16.200.144:1521/albadev;PERSIST SECURITY INFO=True;USER ID=albatest; Password=albatest;"
+- name: NLS_LANG
+  value: .CL8MSWIN1251
+- name: KEY_PRIVATE
+  value: MIIEowIBAAKCAQEAzUD6oowGBe+IFX3qq9qH+go+y/zj3PxOTL6aHPtrKdfGPrXrUlSej60GyBeQFPclG+Su8i162X8d67PqQUVFEiwjOu3mS5qcNeJhH3aCqDXScmKYEbQpilelxZ1nuowXKHmA9KdkrVLvHvOzyrV2RhvwH80yOtJNOYf/7ecKg2FnirMQfOFiquSudBckVd6meyew0ylX0PdSpFeQ7bD92/L+OdMrOLxNq8tbwReEGKo/PYPNU/t1+PMrfEUpOYVShQNsMjHJ+tCkMB2Ji8W7DZRdWxIMagbgKS6Zyup7k6azpJyHYfB4oB/Bmhie3l7pw8anCVHaF+9xVU1jAeHQvQIDAQABAoIBAQCrL22aEhSX8L3bxufpKtrLxK25LhLRZTDcuv8H+vzWqhqyhMFeKisQg2uriFNn2PR/PgxW+W2DZoyK38QZae+Ah4VeibnQBoQQQN1mA05XgoQhWG+iHFOlCRK+LVis8lgCLsxJwC6sjAXZF8I054FcWcK8k0Q4YNt9hxsBzPcsuJq7yz4VlH8YpiUBg7Fi0TLVA0nlt0O7tLRT4lvGDOU50ryOdbsHCP9soDvweAHzA/IdcdYjRoFibImM3/YBgshpSxrlyYD5ERl2zsF6FLyZOCte1aInfby2ihmUmJvMvDgse9FR/X1p/IgDJYXKTgMHxZOHVYAqX9gfffU0MZvBAoGBAOxC/QzpwnX8fILYV8BRQzPN4gquGLofJ4Bt6U9a+0/64B8yzTIddx7G+bpnhBZoyo+B55qsL/I/B6TEshx5F38MO51Kz+M0jT+8c2vN1hb+g2P7ZC2CK+yMjq+a5unr8fYmmQrYgUCJoclybFOyteQb0YzUQVc3m2JOcgNsnuQNAoGBAN5m0JWiEW2PC2UVDcj0ybuXAqtj78NjYOK4MNsgjIOPRToxRcjcrcBbu2KiKFrn3dOTEbv/D6mL6KtcCTsyUhmAGTjY1VWNdxBalAW63z2N3IKyR2J1JTyqQTi2xOVlXh4k4WB5RbTjmu2OumQ6gOHYrr6CAGgfzg8dPBYLnwNxAoGAftMG26OwC33ZqLNRh58Xn/to16rVAzQuFDbsAvkn5qsZHCY9GCXRB+hvraxbr1vZQGfPV6wOoM9M3xnnMnmeL0j1x12dcq2HFSuoGbqIrhc5mLYd9H/n7DcXcRSJ2BAb9rKJfNTzrR00h9qwY82O7kAwoJRf7t2ev4q0kToBoRECgYBlsZ+o/C156lGsi978x6nC5D8tPYoxzqxLnyt/1zdJJObjwAoH2Zh9f7SEWl+XibRt/S67xtpTjYz7Zh82eUD/NgrSapvJ/eC2kqRipltT2x08ieaIR8aaIcOm+jO4LQzHPdfsdCeCmhyKiZwDHpk2LA1jQTCMbBad5KFH91JjkQKBgHktQ/1SXV2Ji0esPj186qE2538VCKRMwHEAhdXpQZHkOYQ0RHO3ZES5hcqdsXyG20hod3F15RbOUdncd0iSnc5aJWK+9XlTrE2MpoGalE/npcu1Ca5PVD+gIXp5+ym3WF+1cDOaOoE6Kvapgt6FV2lTNccG/du8HJthRpImCeLk
+- name: KEY_PUBLIC
+  value: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUD6oowGBe+IFX3qq9qH+go+y/zj3PxOTL6aHPtrKdfGPrXrUlSej60GyBeQFPclG+Su8i162X8d67PqQUVFEiwjOu3mS5qcNeJhH3aCqDXScmKYEbQpilelxZ1nuowXKHmA9KdkrVLvHvOzyrV2RhvwH80yOtJNOYf/7ecKg2FnirMQfOFiquSudBckVd6meyew0ylX0PdSpFeQ7bD92/L+OdMrOLxNq8tbwReEGKo/PYPNU/t1+PMrfEUpOYVShQNsMjHJ+tCkMB2Ji8W7DZRdWxIMagbgKS6Zyup7k6azpJyHYfB4oB/Bmhie3l7pw8anCVHaF+9xVU1jAeHQvQIDAQAB
+- name: SSO_PK
+  valueFrom:
+    secretKeyRef:
+      name: api
+      key: sso-pk
+{% endmacro %}
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: {{ namespace }}
+  annotations:
+    deployment.kubernetes.io/revision: "3"
+    prometheus.io/scrape: "true"
+    prometheus.io/scheme: "http"
+    prometheus.io/port: "80"
+    prometheus.io/path: "/metrics"
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: {{ project_kub }}
+  name: {{ project_kub }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ project_kub }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ project_kub }}
+    spec:
+      containers:
+      - name: {{ project_kub }}-identity
+        image: dist.hosts.rfi:5000/{{ project }}_identity:{{ tag }}
+        imagePullPolicy: Always
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        env:
+        {{ env () | indent(8) }}
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "0.5"
+        livenessProbe:
+          httpGet:
+            path: /health/liveness
+            port: 80
+            httpHeaders:
+            - name: "api-version"
+              value: "2.0"
+          initialDelaySeconds: 60
+          timeoutSeconds: 2
+          periodSeconds: 60
+        readinessProbe:
+          httpGet:
+            path: /health/readiness
+            port: 80
+            httpHeaders:
+            - name: "api-version"
+              value: "2.0"
+          initialDelaySeconds: 30
+          timeoutSeconds: 2
+          periodSeconds: 30
+
+     
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ namespace }}
+  creationTimestamp: null
+  labels:
+    app: {{ project_kub }}
+    promoperator-discovery: {{ project_kub }}
+  name: {{ project_kub }}
+spec:
+  ports:
+  - name: 80-8080
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: {{ project_kub }}-identity
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: {{ namespace }}
+  name: {{ project_kub }}-front
+spec:
+  rules:
+  - host: {{ project_web_url }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ project_kub }}
+          servicePort: 80
+  - host: {{ local_project_web_url }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ project_kub }}
+          servicePort: 80
+

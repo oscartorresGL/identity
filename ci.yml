@@ -1,0 +1,84 @@
+---
+- name: build
+  hosts: localhost
+
+  tasks:
+    - name: Build STS.Identity
+      docker_image:
+        path: "{{ project_dir }}"
+        dockerfile: "{{ project_dir }}/{{ project }}/srs/Identity.STS.Identity/Dockerfile"
+        name: "dist.hosts.rfi:5000/{{ project }}_identity"
+        tag: "{{ tag }}"
+        push: yes
+      tags:
+        - build
+
+- name: deploy pre production
+  gather_facts: yes
+  hosts: localhost
+
+  vars:
+    project_web_url: "identity-preprod.rfibank.ru"
+    local_project_web_url: "identity.preprod.bank.rfi"
+    project_kub: "{{ project | replace('_', '-') }}"
+    namespace: "dev-{{ slug | replace('_', '-') }}"
+
+  tasks:
+    - name: generate kubernetes job
+      template:
+        src: "./preprod.kub.j2"
+        dest: "./preprod.kub.yaml"
+      tags:
+        - deploy-pre-production
+
+    - name: run kuberneres job
+      shell: kubectl apply -f ./preprod.kub.yaml
+      register: kub_log
+      environment:
+        KUBECONFIG: "/root/.kube/config_preprod"
+      ignore_errors: True
+      tags:
+        - deploy-pre-production
+
+
+    - debug: var=kub_log.{{ item }}_lines
+      with_items:
+        - stdout
+        - stderr
+      tags:
+        - deploy-pre-production
+
+- name: deploy production
+  gather_facts: yes
+  hosts: localhost
+
+  vars:
+    project_web_url: "pc-api.rfibank.ru"
+    local_project_web_url: "pc-api.bank.rfi"
+    project_kub: "{{ project | replace('_', '-') }}"
+    namespace: "prod-{{ slug | replace('_', '-') }}"
+
+  tasks:
+    - name: generate kubernetes job
+      template:
+        src: "./prod.kub.j2"
+        dest: "./prod.kub.yaml"
+      tags:
+        - deploy-production
+
+    - name: run kuberneres job
+      shell: kubectl apply -f ./prod.kub.yaml
+      register: kub_log
+      environment:
+        KUBECONFIG: "/root/.kube/config_new"
+      ignore_errors: True
+      tags:
+        - deploy-production
+
+
+    - debug: var=kub_log.{{ item }}_lines
+      with_items:
+        - stdout
+        - stderr
+      tags:
+        - deploy-production
