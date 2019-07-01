@@ -6,7 +6,7 @@
     - name: Build STS.Identity
       docker_image:
         path: "{{ project_dir }}"
-        dockerfile: "{{ project_dir }}/{{ project }}/srs/Identity.STS.Identity/Dockerfile"
+        dockerfile: "{{ project_dir }}/{{ project }}/src/Identity.STS.Identity/Dockerfile"
         name: "dist.hosts.rfi:5000/{{ project }}_identity"
         tag: "{{ tag }}"
         push: yes
