@@ -5,6 +5,8 @@
   value: "http://0.0.0.0:8080"
 - name: AdminConfiguration__IdentityAdminBaseUrl
   value: "http://{{ local_project_web_admin_url }}"
+- name: AdminConfiguration__IdentityServerBaseUrl
+  value: "http://{{ local_project_web_url }}"
 
 {% endmacro %}
 ---
