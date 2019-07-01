@@ -44,7 +44,7 @@ spec:
         app: {{ project_kub }}
     spec:
       containers:
-      - name: {{ project_kub }}-identity
+      - name: {{ project_kub }}
         image: dist.hosts.rfi:5000/{{ project }}_identity:{{ tag }}
         imagePullPolicy: Always
         terminationMessagePath: /dev/termination-log
