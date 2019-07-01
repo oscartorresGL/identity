@@ -20,6 +20,8 @@
   vars:
     project_web_url: "identity-preprod.rfibank.ru"
     local_project_web_url: "identity.preprod.bank.rfi"
+    project_web_admin_url: "identity-admin-preprod.rfibank.ru"
+    local_project_web_admin_url: "identity-admin.preprod.bank.rfi"
     project_kub: "{{ project | replace('_', '-') }}"
     namespace: "dev-{{ slug | replace('_', '-') }}"
 
