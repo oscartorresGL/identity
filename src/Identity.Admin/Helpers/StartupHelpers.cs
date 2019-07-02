@@ -441,12 +441,6 @@ namespace Identity.Admin.Helpers
                         })
                     .AddOpenIdConnect(AuthenticationConsts.OidcAuthenticationScheme, options =>
                     {
-                        using (var http = new HttpClient())
-                        {
-                            logger.LogInformation($"IdentityServerBaseUrl: {adminConfiguration.IdentityServerBaseUrl}");
-                            var res = http.GetStringAsync(adminConfiguration.IdentityServerBaseUrl).Result;
-                            logger.LogInformation($"res: {res}");
-                        }
                         options.Authority = adminConfiguration.IdentityServerBaseUrl;
                         // NOTE: This is only for development set for false
                         // For production use - set RequireHttpsMetadata to true!
