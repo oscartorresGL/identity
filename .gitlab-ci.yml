@@ -14,6 +14,7 @@ before_script:
 stages:
   - build
   - deploy-pre-production
+  - deploy-pre-production-admin
   - deploy-production
 
 build_job:
