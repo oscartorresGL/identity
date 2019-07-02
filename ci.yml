@@ -7,7 +7,7 @@
       docker_image:
         path: "{{ project_dir }}"
         dockerfile: "{{ project_dir }}/src/{{project_folder}}/Dockerfile"
-        name: "dist.hosts.rfi:5000/sts_{{ project }}"
+        name: "dist.hosts.rfi:5000/sts-{{ project }}"
         tag: "{{ tag }}"
         push: yes
       tags:
