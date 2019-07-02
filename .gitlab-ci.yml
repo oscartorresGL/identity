@@ -22,19 +22,19 @@ build_job:
   stage: build
   script:
     - env
-    - ansible-playbook ./ci.yml -t build -e "project_dir=$CI_PROJECT_DIR project=$CI_PROJECT_NAME tag=$CI_PIPELINE_ID project_folder=Identiy.STS.Identity"
+    - ansible-playbook ./ci.yml -t build -e "project_dir=$CI_PROJECT_DIR project=$CI_PROJECT_NAME tag=$CI_PIPELINE_ID project_folder=Identity.STS.Identity"
 
 build_job:
   stage: build-admin
   script:
     - env
-    - ansible-playbook ./ci.yml -t build -e "project_dir=$CI_PROJECT_DIR project=$CI_PROJECT_NAME tag=$CI_PIPELINE_ID project_folder=Identiy.Admin"
+    - ansible-playbook ./ci.yml -t build -e "project_dir=$CI_PROJECT_DIR project=$CI_PROJECT_NAME tag=$CI_PIPELINE_ID project_folder=Identity.Admin"
 
 deploy_pre_production:
   stage: deploy-pre-production
   when: manual
   script:
-    - ansible-playbook ./ci.yml -t deploy-pre-production -e "project_dir=$CI_PROJECT_DIR project=identity tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG project_folder=Identiy.STS.Identity
+    - ansible-playbook ./ci.yml -t deploy-pre-production -e "project_dir=$CI_PROJECT_DIR project=identity tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG project_folder=Identity.STS.Identity
   artifacts:
     paths:
       - preprod-identity.kub.yaml
@@ -43,7 +43,7 @@ deploy_pre_production_admin:
   stage: deploy-pre-production-admin
   when: manual
   script:
-    - ansible-playbook ./ci.yml -t deploy-pre-production -e "project_dir=$CI_PROJECT_DIR project=identity-admin tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG project_folder=Identiy.Admin"
+    - ansible-playbook ./ci.yml -t deploy-pre-production -e "project_dir=$CI_PROJECT_DIR project=identity-admin tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG project_folder=Identity.Admin"
   artifacts:
     paths:
       - preprod-identity-admin.kub.yaml
