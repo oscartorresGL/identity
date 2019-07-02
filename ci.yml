@@ -5,9 +5,8 @@
   tasks:
     - name: Build {{project_folder}}
       docker_image:
-        build:
-          path: "{{ project_dir }}"
-          dockerfile: "{{ project_dir }}/src/{{project_folder}}/Dockerfile"
+        path: "{{ project_dir }}"
+        dockerfile: "{{ project_dir }}/src/{{project_folder}}/Dockerfile"
         buildargs: 
           BUILD_VERSION: "1.0.0.{{ tag }}"
         name: "dist.hosts.rfi:5000/sts-{{ project }}"
