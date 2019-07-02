@@ -34,7 +34,7 @@ deploy_pre_production:
   stage: deploy-pre-production
   when: manual
   script:
-    - ansible-playbook ./ci.yml -t deploy-pre-production -e "project_dir=$CI_PROJECT_DIR project=identity tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG project_folder=Identity.STS.Identity
+    - ansible-playbook ./ci.yml -t deploy-pre-production -e "project_dir=$CI_PROJECT_DIR project=identity tag=$CI_PIPELINE_ID slug=$CI_PROJECT_PATH_SLUG project_folder=Identity.STS.Identity"
   artifacts:
     paths:
       - preprod-identity.kub.yaml
