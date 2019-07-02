@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Identity.Admin.EntityFramework.Shared.DbContexts;
 using Identity.Admin.EntityFramework.Shared.Entities.Identity;
 using Identity.STS.Identity.Helpers;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Identity.STS.Identity
 {
@@ -53,6 +54,8 @@ namespace Identity.STS.Identity
 
             // Add authorization policies for MVC
             services.AddAuthorizationPolicies();
+
+            services.AddHealthChecks();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -63,6 +66,11 @@ namespace Identity.STS.Identity
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions
+            {
+                Predicate = r => true
+            });
 
             // Add custom security headers
             app.UseSecurityHeaders();
