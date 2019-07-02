@@ -6,9 +6,13 @@ services:
     build:
       context: .
       dockerfile: src/Identity.STS.Identity/Dockerfile
+      args:                                                                      
+        BUILD_VERSION: 1.2.3.4    
 
   identity.admin:
     image: ${DOCKER_REGISTRY-}identityadmin
     build:
       context: .
       dockerfile: src/Identity.Admin/Dockerfile
+      args:                                                                      
+        BUILD_VERSION: 1.2.3.4
