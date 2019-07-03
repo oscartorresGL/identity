@@ -27,6 +27,7 @@ using Identity.STS.Identity.Configuration.Intefaces;
 using Identity.STS.Identity.Helpers.Localization;
 using Identity.STS.Identity.Helpers.Stores;
 using Identity.STS.Identity.Services;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Identity.STS.Identity.Helpers
@@ -141,7 +142,7 @@ namespace Identity.STS.Identity.Helpers
             var loginConfiguration = GetLoginConfiguration(configuration);
             var registrationConfiguration = GetRegistrationConfiguration(configuration);
 
-           
+
             services
                 .AddSingleton(registrationConfiguration)
                 .AddSingleton(loginConfiguration)
@@ -433,6 +434,19 @@ namespace Identity.STS.Identity.Helpers
                 options.AddPolicy(AuthorizationConsts.AdministrationPolicy,
                     policy => policy.RequireRole(AuthorizationConsts.AdministrationRole));
             });
+        }
+
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            var hcBuilder = services.AddHealthChecks();
+            var identityDbCS = configuration.GetConnectionString(ConfigurationConsts.IdentityDbConnectionStringKey);
+            hcBuilder
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddNpgSql(identityDbCS,
+                    name: "IdentityDB-check",
+                    tags: new[] { "IdentityDB" });
+            return services;
         }
     }
 }

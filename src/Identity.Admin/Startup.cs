@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -82,14 +83,12 @@ namespace Identity.Admin
             // Add authorization policies for MVC
             services.AddAuthorizationPolicies();
 
-            services.AddHealthChecks();
+            services.AddCustomHealthCheck(Configuration, rootConfiguration.AdminConfiguration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.AddLogging(loggerFactory, Configuration);
-
-
 
             if (env.IsDevelopment())
             {
@@ -100,9 +99,15 @@ namespace Identity.Admin
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
-                Predicate = r => true
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
             });
 
             // Add custom security headers

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,7 +56,8 @@ namespace Identity.STS.Identity
             // Add authorization policies for MVC
             services.AddAuthorizationPolicies();
 
-            services.AddHealthChecks();
+            services.AddCustomHealthCheck(Configuration);
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -67,14 +69,19 @@ namespace Identity.STS.Identity
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
-                Predicate = r => true
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
             });
 
             // Add custom security headers
             app.UseSecurityHeaders();
-
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseMvcLocalizationServices();

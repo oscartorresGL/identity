@@ -12,20 +12,11 @@ namespace Identity.Admin
 {
     public class Program
     {
-        private const string SeedArgs = "/seed";
-
         public static async Task Main(string[] args)
         {
-            //var seed = args.Any(x => x == SeedArgs);
-            //if (seed) args = args.Except(new[] { SeedArgs }).ToArray();
-
             var seed = Environment.GetEnvironmentVariable("IDENTITY_ADMIN_SEED");
-
             var host = BuildWebHost(args);
-            
 
-            // Uncomment this to seed upon startup, alternatively pass in `dotnet run /seed` to seed using CLI
-            // await DbMigrationHelpers.EnsureSeedData<IdentityServerConfigurationDbContext, AdminIdentityDbContext, IdentityServerPersistedGrantDbContext, AdminLogDbContext, UserIdentity, UserIdentityRole>(host);
             if (seed != null)
             {
                 await DbMigrationHelpers.EnsureSeedData<IdentityServerConfigurationDbContext, AdminIdentityDbContext, IdentityServerPersistedGrantDbContext, AdminLogDbContext, UserIdentity, UserIdentityRole>(host);

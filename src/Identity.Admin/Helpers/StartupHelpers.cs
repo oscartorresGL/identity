@@ -38,6 +38,7 @@ using Identity.Admin.Helpers.Localization;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Net.Http;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Identity.Admin.Helpers
 {
@@ -507,5 +508,16 @@ namespace Identity.Admin.Helpers
 
             return Task.FromResult(0);
         }
+
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration, IAdminConfiguration adminConfiguration)
+        {
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddUrlGroup(new Uri(adminConfiguration.IdentityServerBaseUrl + configuration["IdentityUrlHC"]),
+                    name: "identityapi-check", tags: new string[] {"identityapi"});
+
+            return services;
+        }
+        
     }
 }

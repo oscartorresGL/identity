@@ -17,7 +17,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:9000
-#      - IDENTITY_ADMIN_SEED=
+      - IDENTITY_ADMIN_SEED=
       - AdminConfiguration__IdentityServerBaseUrl=http://identity.api:5000
     volumes:
       - ./src/Identity.Admin/appsettings.json:/app/appsettings.json
