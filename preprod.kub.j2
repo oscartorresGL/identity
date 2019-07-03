@@ -57,14 +57,14 @@ spec:
         livenessProbe:
           httpGet:
             path: /hc
-            port: 80
+            port: 8080
           initialDelaySeconds: 60
           timeoutSeconds: 2
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /hc
-            port: 80
+            port: 8080
           initialDelaySeconds: 30
           timeoutSeconds: 2
           periodSeconds: 30
