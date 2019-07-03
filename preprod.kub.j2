@@ -56,14 +56,14 @@ spec:
             cpu: "0.5"
         livenessProbe:
           httpGet:
-            path: /hс
+            path: /hc
             port: 80
           initialDelaySeconds: 60
           timeoutSeconds: 2
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /hс
+            path: /hc
             port: 80
           initialDelaySeconds: 30
           timeoutSeconds: 2
