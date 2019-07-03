@@ -7,7 +7,8 @@ services:
       context: .
       dockerfile: src/Identity.STS.Identity/Dockerfile
       args:                                                                      
-        BUILD_VERSION: 1.2.3.4    
+        BUILD_VERSION: 1.2.3.4
+        DOCKER_REGISTRY: mcr.microsoft.com    
 
   identity.admin:
     image: ${DOCKER_REGISTRY-}identityadmin
@@ -16,3 +17,4 @@ services:
       dockerfile: src/Identity.Admin/Dockerfile
       args:                                                                      
         BUILD_VERSION: 1.2.3.4
+        DOCKER_REGISTRY: mcr.microsoft.com    

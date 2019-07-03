@@ -1,7 +1,8 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+ARG DOCKER_REGISTRY
+FROM $DOCKER_REGISTRY/dotnet/core/aspnet:2.2-stretch-slim AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
+FROM $DOCKER_REGISTRY/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["src/Identity.Admin/Identity.Admin.csproj", "src/Identity.Admin/"]
 COPY ["src/Identity.Admin.EntityFramework.Shared/Identity.Admin.EntityFramework.Shared.csproj", "src/Identity.Admin.EntityFramework.Shared/"]
