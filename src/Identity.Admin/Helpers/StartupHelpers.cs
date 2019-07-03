@@ -503,7 +503,7 @@ namespace Identity.Admin.Helpers
 
         private static Task OnRedirectToIdentityProvider(RedirectContext n, IAdminConfiguration adminConfiguration)
         {
-            n.ProtocolMessage.RedirectUri = adminConfiguration.IdentityAdminRedirectUri;
+            n.ProtocolMessage.RedirectUri = adminConfiguration.IdentityAdminBaseUrl +  adminConfiguration.IdentityAdminRedirectUri;
 
             return Task.FromResult(0);
         }
