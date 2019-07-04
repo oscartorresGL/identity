@@ -132,7 +132,7 @@ namespace Identity.STS.Identity.Controllers
                 return Redirect("~/");
             }
 
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid)
             {
                 var user = await _userResolver.GetUserAsync(model.Username);
                 if (user == default(TUser))
@@ -150,6 +150,7 @@ namespace Identity.STS.Identity.Controllers
                                 PhoneNumber = ldapUser.Phone,
                                 PhoneNumberConfirmed = true
                             };
+
                             var createResult = await _userManager.CreateAsync(newUser, model.Password);
                             if (createResult.Succeeded)
                             {

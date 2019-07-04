@@ -24,6 +24,7 @@ using Identity.STS.Identity.Configuration;
 using Identity.STS.Identity.Configuration.ApplicationParts;
 using Identity.STS.Identity.Configuration.Constants;
 using Identity.STS.Identity.Configuration.Intefaces;
+using Identity.STS.Identity.Core;
 using Identity.STS.Identity.Core.LdapProvider;
 using Identity.STS.Identity.Core.LdapProvider.Abstract;
 using Identity.STS.Identity.Core.LdapProvider.Models;
@@ -135,18 +136,20 @@ namespace Identity.STS.Identity.Helpers
         /// <param name="hostingEnvironment"></param>
         /// <param name="configuration"></param>
         /// <param name="logger"></param>
-        public static void AddAuthenticationServices<TConfigurationDbContext, TPersistedGrantDbContext, TIdentityDbContext, TUserIdentity, TUserIdentityRole>(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILogger logger)
+        public static void AddAuthenticationServices<TConfigurationDbContext, TPersistedGrantDbContext, TIdentityDbContext, TUserIdentity, TUserIdentityRole, TKey>(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILogger logger)
             where TPersistedGrantDbContext : DbContext, IPersistedGrantDbContext
             where TConfigurationDbContext : DbContext, IConfigurationDbContext
             where TIdentityDbContext : DbContext
-            where TUserIdentity : class
+            where TUserIdentity : IdentityUser<TKey>, new()
             where TUserIdentityRole : class
+            where TKey : IEquatable<TKey>
         {
             var loginConfiguration = GetLoginConfiguration(configuration);
             var registrationConfiguration = GetRegistrationConfiguration(configuration);
 
             var ldapConfiguration = configuration.GetSection(nameof(LdapConfiguration)).Get<LdapConfiguration>();
 
+            services.AddScoped<ILdapService, LdapService>();
 
             services
                 .AddSingleton(registrationConfiguration)
@@ -159,12 +162,12 @@ namespace Identity.STS.Identity.Helpers
                 })
                 .AddEntityFrameworkStores<TIdentityDbContext>()
                 //.AddUserManager<LdapUserManager<TUserIdentity>>()
+                //.AddPasswordValidator<LdapResourceOwnerPasswordValidator<TUserIdentity, TKey>>()
                 .AddDefaultTokenProviders();
 
             //services.AddScoped<IUserStore<UserIdentity>, LdapUserStore>();
             //services.AddScoped<IRoleStore<UserIdentityRole>, LdapRoleStore>();
-
-            services.AddScoped<ILdapService, LdapService>();
+            
 
             services.Configure<IISOptions>(iis =>
             {
