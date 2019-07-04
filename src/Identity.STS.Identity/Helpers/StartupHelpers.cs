@@ -24,6 +24,9 @@ using Identity.STS.Identity.Configuration;
 using Identity.STS.Identity.Configuration.ApplicationParts;
 using Identity.STS.Identity.Configuration.Constants;
 using Identity.STS.Identity.Configuration.Intefaces;
+using Identity.STS.Identity.Core.LdapProvider;
+using Identity.STS.Identity.Core.LdapProvider.Abstract;
+using Identity.STS.Identity.Core.LdapProvider.Models;
 using Identity.STS.Identity.Helpers.Localization;
 using Identity.STS.Identity.Helpers.Stores;
 using Identity.STS.Identity.Services;
@@ -142,20 +145,26 @@ namespace Identity.STS.Identity.Helpers
             var loginConfiguration = GetLoginConfiguration(configuration);
             var registrationConfiguration = GetRegistrationConfiguration(configuration);
 
+            var ldapConfiguration = configuration.GetSection(nameof(LdapConfiguration)).Get<LdapConfiguration>();
+
 
             services
                 .AddSingleton(registrationConfiguration)
                 .AddSingleton(loginConfiguration)
+                .AddSingleton(ldapConfiguration)
                 .AddScoped<UserResolver<TUserIdentity>>()
                 .AddIdentity<TUserIdentity, TUserIdentityRole>(options =>
                 {
-                    options.User.RequireUniqueEmail = true;
+                    options.User.RequireUniqueEmail = false;
                 })
                 .AddEntityFrameworkStores<TIdentityDbContext>()
+                //.AddUserManager<LdapUserManager<TUserIdentity>>()
                 .AddDefaultTokenProviders();
 
             //services.AddScoped<IUserStore<UserIdentity>, LdapUserStore>();
             //services.AddScoped<IRoleStore<UserIdentityRole>, LdapRoleStore>();
+
+            services.AddScoped<ILdapService, LdapService>();
 
             services.Configure<IISOptions>(iis =>
             {

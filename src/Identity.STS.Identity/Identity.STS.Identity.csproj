@@ -15,7 +15,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
 		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.4.0" />
 		<PackageReference Include="IdentityServer4.EntityFramework" Version="2.4.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
+		<PackageReference Include="Novell.Directory.Ldap.NETStandard2_0" Version="3.1.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
 		<PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />

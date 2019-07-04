@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Identity.STS.Identity.Configuration;
+using Identity.STS.Identity.Core.LdapProvider.Abstract;
 using Identity.STS.Identity.Helpers;
 using Identity.STS.Identity.Helpers.Localization;
 using Identity.STS.Identity.ViewModels.Account;
@@ -46,6 +47,8 @@ namespace Identity.STS.Identity.Controllers
         private readonly LoginConfiguration _loginConfiguration;
         private readonly RegisterConfiguration _registerConfiguration;
 
+        private readonly ILdapService _ldapService;
+
         public AccountController(
             UserResolver<TUser> userResolver,
             UserManager<TUser> userManager,
@@ -57,7 +60,8 @@ namespace Identity.STS.Identity.Controllers
             IEmailSender emailSender,
             IGenericControllerLocalizer<AccountController<TUser, TKey>> localizer,
             LoginConfiguration loginConfiguration,
-            RegisterConfiguration registerConfiguration)
+            RegisterConfiguration registerConfiguration,
+            ILdapService ldapService)
         {
             _userResolver = userResolver;
             _userManager = userManager;
@@ -70,6 +74,7 @@ namespace Identity.STS.Identity.Controllers
             _localizer = localizer;
             _loginConfiguration = loginConfiguration;
             _registerConfiguration = registerConfiguration;
+            _ldapService = ldapService;
         }
 
         /// <summary>
@@ -130,6 +135,35 @@ namespace Identity.STS.Identity.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userResolver.GetUserAsync(model.Username);
+                if (user == default(TUser))
+                {
+                    if (_ldapService.Authenticate(model.Username, model.Password))
+                    {
+                        var ldapUser = _ldapService.GetUserByUserName(model.Username);
+                        if (ldapUser != null)
+                        {
+                            var newUser = new TUser()
+                            {
+                                UserName = ldapUser.UserName,
+                                Email = ldapUser.Email,
+                                EmailConfirmed = true,
+                                PhoneNumber = ldapUser.Phone,
+                                PhoneNumberConfirmed = true
+                            };
+                            var createResult = await _userManager.CreateAsync(newUser, model.Password);
+                            if (createResult.Succeeded)
+                            {
+                                user = newUser;
+                            }
+                            else
+                            {
+                                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username,
+                                    string.Join(';',createResult.Errors.SelectMany(r => r.Description))));
+                            }
+                        }
+                    }
+                }
+
                 if (user != default(TUser))
                 {
                     var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberLogin, lockoutOnFailure: true);
