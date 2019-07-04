@@ -85,6 +85,7 @@ namespace Identity.STS.Identity.Core.LdapProvider
         private ILdapConnection GetConnection()
         {
             var ldapConnection = new LdapConnection() { SecureSocketLayer = _configuration.UseSSL };
+
             //Connect function will create a socket connection to the server - Port 389 for insecure and 3269 for secure    
             ldapConnection.Connect(_configuration.ServerName, _configuration.ServerPort);
             //Bind function with null user dn and password value will perform anonymous bind to LDAP server 
