@@ -104,6 +104,9 @@ kind: Ingress
 metadata:
   namespace: {{ namespace }}
   name: {{ project_kub }}-front
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 16k
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
 spec:
   rules:
   - host: {{ project_web_url }}
