@@ -12,20 +12,19 @@ before_script:
 
 
 stages:
-  - build-identity
-  - build-admin
+  - build
   - deploy-pre-production-identity
   - deploy-pre-production-admin
   - deploy-production
 
 build_identity_job:
-  stage: build-identity
+  stage: build
   script:
     - env
     - ansible-playbook ./ci.yml -t build -e "project_dir=$CI_PROJECT_DIR project=identity tag=$CI_PIPELINE_ID project_folder=Identity.STS.Identity"
 
 build_admin_job:
-  stage: build-admin
+  stage: build
   script:
     - env
     - ansible-playbook ./ci.yml -t build -e "project_dir=$CI_PROJECT_DIR project=identity-admin tag=$CI_PIPELINE_ID project_folder=Identity.Admin"
